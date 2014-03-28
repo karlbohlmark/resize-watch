@@ -32,15 +32,17 @@ var watcher = new Watcher({
     paths: [ 'upload' ],
     filters: {
         includeFile: function(name) {
-        return /\.js/.test(name);
+            return /\.png/.test(name) || /\.jpg/.test(name);
+        }
     }
-}});
+});
 
 watcher.on('create', function (name) {
     console.log("CREATED ", name)
 })
 watcher.start(function (err) {
-    console.log('started watching', err)
+    if (err) throw err;
+    console.log('started watching')
 })
 
 function resize (file, target) {
