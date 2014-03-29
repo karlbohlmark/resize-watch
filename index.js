@@ -38,7 +38,9 @@ var watcher = new Watcher({
 });
 
 watcher.on('create', function (name) {
-    console.log("CREATED ", name)
+    targets.forEach(function (t) {
+        resize(file, t);
+    })
 })
 watcher.start(function (err) {
     if (err) throw err;
@@ -46,13 +48,16 @@ watcher.start(function (err) {
 })
 
 function resize (file, target) {
-    var srcData = fs.readFileSync(file)
-    var imageMagickOptions = {srcData: srcData}
-    imageMagickOptions.__proto__ = target
-    var resizedBuffer = imagemagick.convert(imageMagickOptions);
-    var width = imageMagickOptions.width
-    var height = imageMagickOptions.height
+    var height = target.height
+    var width = target.width
     var newName = file.replace('.', '_' + height + 'x' + width + '.')
-    console.log('create',  newName)
-    require('fs').writeFileSync(newName, resizedBuffer, 'binary');
+
+    sharp(file)
+        .resize(width, height)
+        .write(newName, function(err) {
+              if (err) {
+                  throw err;
+              }
+              console.log("Wrote " + newName)
+         });
 }
