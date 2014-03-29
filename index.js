@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs = require('fs')
 var path = require('path')
 
@@ -9,7 +11,7 @@ var image_dir = args.pop();
 var targets = JSON.parse(fs.readFileSync(args.pop));
 
 var watcher = new Watcher({
-    paths: [ 'upload' ],
+    paths: [ image_dir ],
     filters: {
         includeFile: function(name) {
             return /\.png/.test(name) || /\.jpg/.test(name);
