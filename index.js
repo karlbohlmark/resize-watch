@@ -8,7 +8,7 @@ var resize = require("kb-resize");
 
 var args = process.argv;
 var image_dir = args.pop();
-var targets = JSON.parse(fs.readFileSync(args.pop));
+var targets = JSON.parse(fs.readFileSync(args.pop()));
 
 var watcher = new Watcher({
     paths: [ image_dir ],
