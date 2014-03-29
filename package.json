@@ -10,6 +10,6 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "watch-fs": "0.0.7",
-    "imagemagick-native": "^0.2.9"
+    "kb-resize": "https://github.com/karlbohlmark/node-image-resize/archive/0.0.0.tar.gz"
   }
 }

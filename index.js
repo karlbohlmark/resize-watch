@@ -2,31 +2,11 @@ var fs = require('fs')
 var path = require('path')
 
 var Watcher = require('watch-fs').Watcher;
+var resize = require("kb-resize");
 
-var imagemagick = require('imagemagick-native')
-// ------------ SETTINGS --------------
-var opts =  {
-    resizeStyle: "aspectfill",
-    quality: 90,
-    format: 'JPEG'
-}
-
-var targets =[
-  {
-    width: 100,
-    height: 100
-  },
-  {
-    width: 200,
-    height: 200
-  }
-]
-
-targets.forEach(function (target) {
-    target.__proto__ = opts;
-})
-// --------------------------------------
-
+var args = process.argv;
+var image_dir = args.pop();
+var targets = JSON.parse(fs.readFileSync(args.pop));
 
 var watcher = new Watcher({
     paths: [ 'upload' ],
@@ -39,25 +19,13 @@ var watcher = new Watcher({
 
 watcher.on('create', function (name) {
     targets.forEach(function (t) {
-        resize(file, t);
+        resize(file, t, function (err) {
+          console.error(err)
+        });
     })
-})
+});
+
 watcher.start(function (err) {
     if (err) throw err;
     console.log('started watching')
-})
-
-function resize (file, target) {
-    var height = target.height
-    var width = target.width
-    var newName = file.replace('.', '_' + height + 'x' + width + '.')
-
-    sharp(file)
-        .resize(width, height)
-        .write(newName, function(err) {
-              if (err) {
-                  throw err;
-              }
-              console.log("Wrote " + newName)
-         });
-}
+});
