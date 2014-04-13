@@ -18,13 +18,14 @@ var watcher = new Watcher({
     paths: [ image_dir ],
     filters: {
         includeFile: function(name) {
-            return /\.png/.test(name) || /\.jpg/.test(name);
+            return /\.png/.test(name) || /\.jpg/.test(name) || /\.jpeg/.test(name);
         }
     }
 });
 
 watcher.on('create', function (name) {
     targets.forEach(function (t) {
+        t.outdir = "resized";
         resize(name, t, function (err) {
           console.error(err)
         });
