@@ -7,6 +7,10 @@ var Watcher = require('watch-fs').Watcher;
 var resize = require("kb-resize");
 
 var args = process.argv;
+if (args.length < 4) {
+  console.log("Usage:", "resize-watch <imagedir> <targets-file>")
+  process.exit();
+}
 var image_dir = args.pop();
 var targets = JSON.parse(fs.readFileSync(args.pop()));
 
@@ -21,7 +25,7 @@ var watcher = new Watcher({
 
 watcher.on('create', function (name) {
     targets.forEach(function (t) {
-        resize(file, t, function (err) {
+        resize(name, t, function (err) {
           console.error(err)
         });
     })
