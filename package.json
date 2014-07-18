@@ -11,7 +11,8 @@
   "dependencies": {
     "watch-fs": "0.0.7",
     "kb-resize": "https://github.com/karlbohlmark/node-image-resize/archive/0.0.1.tar.gz",
-    "image-size": "^0.2.3"
+    "image-size": "^0.2.3",
+    "node-watch": "^0.3.4"
   },
   "bin": {
     "resize-watch": "index.js"

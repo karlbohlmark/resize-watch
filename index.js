@@ -5,6 +5,7 @@ var path = require('path')
 var imageSize = require("image-size");
 
 var Watcher = require('watch-fs').Watcher;
+var watch = require("node-watch");
 var resize = require("kb-resize");
 
 var args = process.argv;
@@ -15,16 +16,7 @@ if (args.length < 4) {
 var targets = JSON.parse(fs.readFileSync(args.pop()));
 var image_dir = args.pop();
 
-var watcher = new Watcher({
-    paths: [ image_dir ],
-    filters: {
-        includeFile: function(name) {
-            return /\.png/.test(name) || /\.jpg/.test(name) || /\.jpeg/.test(name);
-        }
-    }
-});
-
-watcher.on('create', function (name) {
+watch(image_dir, function (name) {
     var dimension = imageSize(name);
     var filename = path.basename(name)
     targets.forEach(function (t) {
@@ -42,9 +34,4 @@ watcher.on('create', function (name) {
           console.error(err)
         });
     })
-});
-
-watcher.start(function (err) {
-    if (err) throw err;
-    console.log('started watching')
 });
