@@ -36,21 +36,20 @@ function resizeImage(filename) {
             console.log("skipping", filename, t.width, t.height);
             return;
         }
-        if (!t.crop) {
-                var w = t.width/dimension.width;
-                var h = t.height/dimension.height;
-                if (w < h) {
-                    t.height = w * dimension.height;
-                } else {
-                    t.width = h * dimension.width;
-                }
+
+        var w = t.width/dimension.width;
+        var h = t.height/dimension.height;
+        if (w < h) {
+            t.height = w * dimension.height;
+        } else {
+            t.width = h * dimension.width;
         }
         t.outdir = outdir;
 
         resize(filename, t, function (err) {
           //console.error(err)
         });
-    })
+    })    
 }
 
 function isImage(f) {

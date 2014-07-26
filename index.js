@@ -17,20 +17,26 @@ var targets = JSON.parse(fs.readFileSync(args.pop()));
 var image_dir = args.pop();
 
 watch(image_dir, function (name) {
+    if (name.indexOf('.DS_Store') !== -1) return;
+    if (!fs.existsSync(name)) {
+        console.log(name, "doesnt exist, returning")
+        return
+    }
     var dimension = imageSize(name);
     var filename = path.basename(name)
     targets.forEach(function (t) {
-        t.outfile = filename.replace(".", "_" + t.width + "x" + t.height + ".")
+        var opt = JSON.parse(JSON.stringify(t))
+        opt.outfile = filename.replace(".", "_" + t.width + "x" + t.height + ".")
         var w = t.width/dimension.width;
         var h = t.height/dimension.height;
         if (w < h) {
-            t.height = w * dimension.height;
+            opt.height = w * dimension.height;
         } else {
-            t.width = h * dimension.width;
+            opt.width = h * dimension.width;
         }
-        t.outdir = "resized";
+        opt.outdir = "resized";
 
-        resize(name, t, function (err) {
+        resize(name, opt, function (err) {
           console.error(err)
         });
     })
